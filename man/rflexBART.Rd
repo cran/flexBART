@@ -1,0 +1,36 @@
+\name{rflexBART}
+\alias{rflexBART}
+\title{
+Draw samples from the regression tree prior
+}
+\description{
+Draws several binary regression trees from the flexBART tree prior, resulting in a single prior draw from the sum-of-trees prior.
+}
+\usage{
+rflexBART(train_data,nd,verbose = TRUE,
+          print_every = floor(nd/10),...)
+}
+\arguments{
+  \item{train_data}{an object of class \code{data.frame} containing data used to train the model. 
+  As usual, rows (resp. columns) correspond to observations (resp. variables)}
+  \item{nd}{Number of trees to draw}
+  \item{verbose}{Logical, indicating whether a message should be printed to the R console after every \code{print_every} trees have been sampled. Default is \code{FALSE}.}
+  \item{print_every}{If \code{verbose == TRUE}, then a message is printed to the R console after every \code{print_every} trees have been sampled. Default is \code{floor(nd/10)}.}
+  \item{\dots}{Additional arguments for setting prior hyperparameters (e.g., number of trees, \eqn{\mu_{0}}{mu_0}, \eqn{\tau}{tau}, etc.). 
+  See \code{\link{flexBART}} for details about additional arguments.}
+}
+\details{
+This function is useful for drawing samples from the regression tree prior underpinning flexBART. 
+Together, these sampled trees form a single ensemble of trees.
+The main utility of this function is to study how often certain observations are clustered together in individual trees. 
+This is key to understanding how flexBART \dQuote{borrows strength} across observations. 
+}
+\value{
+A list containing
+\item{num_leafs}{An integer vector of length \code{nd} recording the number of leaf nodes in each tree of the ensemble.}
+\item{num_singletons}{An integer vector of length \code{nd} recording the number of leaf nodes in each tree that contain only one observation.}
+\item{num_empty}{An integer vector of length \code{nd} recording the number of leaf nodes in each tree that contain no observations.}
+\item{max_leaf_size}{An integer vector of length \code{nd} recording the maximum number of observation contained in a leaf in each tree of the ensemble.}
+\item{min_leaf_size}{An integer vector of length \code{nd} recording the minimum number of observation contained in a leaf in each tree of the ensemble.}
+\item{kernel}{An \code{nrow(train_data)} x \code{nrow(train_data)} matrix whose (i,j) entry is the proportion of tree draws in which observations i and j land in the same leaf of the tree.}
+}
